@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"downlod-file-gcs/constant"
+	"downlod-file-gcs/service"
 	"downlod-file-gcs/util"
 	"flag"
 )
@@ -18,6 +19,12 @@ func main() {
 	// contextに値を設定
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, constant.ProcessingDateContextKey, reqProcessingDate)
+
+	// service初期化処理
+	service := service.NewGetFileService()
+
+	// バッチ処理実行
+	service.Execute(ctx)
 }
 
 func parseArgs() string {
