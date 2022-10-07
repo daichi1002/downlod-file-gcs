@@ -1,9 +1,10 @@
 package main
 
 import (
+	"context"
+	"downlod-file-gcs/constant"
 	"downlod-file-gcs/util"
 	"flag"
-	"fmt"
 )
 
 var logger = util.NewLogger()
@@ -11,7 +12,12 @@ var logger = util.NewLogger()
 func main() {
 	// 起動引数の処理
 	reqProcessingDate := parseArgs()
-	fmt.Println(reqProcessingDate)
+
+	logger.Infof("%sのバッチ処理開始", reqProcessingDate)
+
+	// contextに値を設定
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, constant.ProcessingDateContextKey, reqProcessingDate)
 }
 
 func parseArgs() string {

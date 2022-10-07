@@ -25,6 +25,6 @@ func CreateProcessingDate(reqProcessingDate string) (d string, e error) {
 		// reqProcessingDateをフォーマットして返す
 		t = parsedDate
 	}
-	d = t.Format(config.ProcessingDateFormat)
+	d = t.Format(config.ReqProcessingDateFormat)
 	return
 }
