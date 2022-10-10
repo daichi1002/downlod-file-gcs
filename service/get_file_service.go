@@ -1,6 +1,9 @@
 package service
 
-import "context"
+import (
+	"context"
+	"downlod-file-gcs/util"
+)
 
 type Service struct{}
 
@@ -11,4 +14,9 @@ func NewGetFileService() *Service {
 	return service
 }
 
-func (service *Service) Execute(ctx context.Context) {}
+var logger = util.NewLogger()
+
+func (service *Service) Execute(ctx context.Context) {
+	logger.Info("ファイルダウンロード処理開始")
+	logger.Info("ファイルダウンロード処理終了")
+}
