@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
-	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -19,8 +18,7 @@ const (
 )
 
 var (
-	databaseViper = viper.New()
-	logger        = util.NewLogger()
+	logger = util.NewLogger()
 )
 
 type DatabaseConfig struct {
