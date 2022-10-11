@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	cloud.google.com/go/storage v1.23.0
+	github.com/joho/godotenv v1.4.0
 	github.com/spf13/viper v1.13.0
 	go.uber.org/zap v1.23.0
 	gorm.io/driver/mysql v1.4.1
