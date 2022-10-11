@@ -1,7 +1,12 @@
 package constant
 
-// 日付フォーマット
-const Local = "UTC"
+const (
+	// 処理日時の日付フォーマット
+	// ProcessingDateFormat    string = "2006-01-02 15:04:05"
+	ReqProcessingDateFormat string = "2006-01-02"
 
-// contextKey contextのキー項目
-const ProcessingDateContextKey string = "DATE"
+	Local = "UTC"
+
+	// contextKey contextのキー項目
+	ProcessingDateContextKey string = "DATE"
+)

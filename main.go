@@ -2,10 +2,13 @@ package main
 
 import (
 	"context"
+	"downlod-file-gcs/config"
 	"downlod-file-gcs/constant"
 	"downlod-file-gcs/service"
 	"downlod-file-gcs/util"
 	"flag"
+
+	"gorm.io/gorm"
 )
 
 var logger = util.NewLogger()
@@ -19,6 +22,14 @@ func main() {
 	// contextに値を設定
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, constant.ProcessingDateContextKey, reqProcessingDate)
+
+	// DB接続処理
+	databaseConfig := config.GetDatabaseConfig()
+	db, err := databaseConfig.ConnectDatabaseWithGorm(10)
+	if err != nil {
+		logger.Fatalf("Failed to connect database")
+	}
+	defer closeGormDB(db)
 
 	// service初期化処理
 	service := service.NewGetFileService()
@@ -41,4 +52,14 @@ func parseArgs() string {
 	}
 
 	return processingDate
+}
+
+func closeGormDB(db *gorm.DB) {
+	sqlDB, err := db.DB()
+	if err != nil {
+		logger.Errorf("failed to extract sql db from gorm.DB instance, error: %v", err)
+	}
+	if err := sqlDB.Close(); err != nil {
+		logger.Errorf("failed to close sql db, error: %v", err)
+	}
 }

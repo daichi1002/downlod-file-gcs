@@ -1,7 +1,6 @@
 package util
 
 import (
-	"downlod-file-gcs/config"
 	"downlod-file-gcs/constant"
 	"fmt"
 	"time"
@@ -16,7 +15,7 @@ func CreateProcessingDate(reqProcessingDate string) (d string, e error) {
 		now := time.Now().In(utc)
 		t = time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, utc)
 	} else {
-		parsedDate, err := time.Parse(config.ReqProcessingDateFormat, reqProcessingDate)
+		parsedDate, err := time.Parse(constant.ReqProcessingDateFormat, reqProcessingDate)
 		if err != nil {
 			//　引数が存在しない日付だったエラーを返却する
 			e = fmt.Errorf("'%s'は日付ではありません", reqProcessingDate)
@@ -25,6 +24,6 @@ func CreateProcessingDate(reqProcessingDate string) (d string, e error) {
 		// reqProcessingDateをフォーマットして返す
 		t = parsedDate
 	}
-	d = t.Format(config.ReqProcessingDateFormat)
+	d = t.Format(constant.ReqProcessingDateFormat)
 	return
 }
