@@ -31,11 +31,18 @@ func main() {
 	}
 	defer closeGormDB(db)
 
+	// GCS接続準備
+	gcsClient, err := config.ConnectGCS(ctx)
+	if err != nil {
+		logger.Fatalf("Failed to connect to GCS: %v", err)
+	}
+	logger.Info("GCS connected")
+
 	// service初期化処理
 	service := service.NewGetFileService()
 
 	// バッチ処理実行
-	service.Execute(ctx)
+	service.Execute(ctx, db, gcsClient)
 }
 
 func parseArgs() string {

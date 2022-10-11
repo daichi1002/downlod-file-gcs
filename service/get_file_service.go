@@ -2,13 +2,16 @@ package service
 
 import (
 	"context"
+	"downlod-file-gcs/interfaces"
 	"downlod-file-gcs/util"
+
+	"gorm.io/gorm"
 )
 
 type Service struct{}
 
 // NewGetFileService の初期化処理
-func NewGetFileService() *Service {
+func NewGetFileService() interfaces.Service {
 	// サービスの生成
 	service := new(Service)
 	return service
@@ -16,7 +19,7 @@ func NewGetFileService() *Service {
 
 var logger = util.NewLogger()
 
-func (service *Service) Execute(ctx context.Context) {
-	logger.Info("ファイルダウンロード処理開始")
-	logger.Info("ファイルダウンロード処理終了")
+func (service *Service) Execute(ctx context.Context, db *gorm.DB, gcsClient interfaces.GcsClient) {
+	logger.Info("start file download")
+	logger.Info("end file download")
 }

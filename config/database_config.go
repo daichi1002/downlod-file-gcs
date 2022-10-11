@@ -59,6 +59,7 @@ func init() {
 	databaseViper.SetDefault(DBName, "dev")
 	databaseViper.SetDefault(DBHost, "127.0.0.1")
 	databaseViper.SetDefault(DBUser, "root")
+	databaseViper.SetDefault(DBPassword, "")
 	databaseViper.SetDefault(DBIdleConnection, 100)
 	databaseViper.SetDefault(DBMaxConnection, 100)
 	databaseViper.SetDefault(DBConnMaxLifeTime, 100)
