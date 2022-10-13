@@ -5,21 +5,29 @@ import (
 	"downlod-file-gcs/interfaces"
 	"downlod-file-gcs/util"
 
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
-type Service struct{}
+type Service struct {
+	logger *zap.SugaredLogger
+}
 
 // NewGetFileService の初期化処理
 func NewGetFileService() interfaces.Service {
+
+	logger := util.NewLogger()
 	// サービスの生成
-	service := new(Service)
+	service := &Service{
+		logger: logger,
+	}
 	return service
 }
 
-var logger = util.NewLogger()
-
-func (service *Service) Execute(ctx context.Context, db *gorm.DB, gcsClient interfaces.GcsClient) {
-	logger.Info("start file download")
-	logger.Info("end file download")
+func (s *Service) Execute(ctx context.Context, db *gorm.DB, gcsClient interfaces.GcsClient) {
+	s.logger.Info("start file download")
+	s.DownloadFile()
+	s.logger.Info("end file download")
 }
+
+func (service *Service) DownloadFile() {}
