@@ -1,7 +1,11 @@
 package interfaces
 
-import "context"
+import (
+	"context"
+
+	"cloud.google.com/go/storage"
+)
 
 type GcsClient interface {
-	DownloadFile(ctx context.Context, bucket, object string) ([]byte, error)
+	ListFilesWithPrefix(ctx context.Context, bucket string) ([]*storage.ObjectAttrs, error)
 }
