@@ -17,9 +17,12 @@ func NewGcsClient(client *storage.Client) interfaces.GcsClient {
 	return &GcsClient{client: client}
 }
 
-func (c *GcsClient) ListFilesWithPrefix(ctx context.Context, bucket string) ([]*storage.ObjectAttrs, error) {
+func (c *GcsClient) ListFilesWithPrefix(ctx context.Context, bucket, prefix string) ([]*storage.ObjectAttrs, error) {
 
-	it := c.client.Bucket(bucket).Objects(ctx, &storage.Query{})
+	it := c.client.Bucket(bucket).Objects(ctx, &storage.Query{
+		Prefix:    prefix,
+		Delimiter: prefix,
+	})
 	objects := make([]*storage.ObjectAttrs, 0)
 	for {
 		attrs, err := it.Next()
@@ -27,7 +30,7 @@ func (c *GcsClient) ListFilesWithPrefix(ctx context.Context, bucket string) ([]*
 			break
 		}
 		if err != nil {
-			return nil, fmt.Errorf("%vからファイル取得エラー: %v", bucket, err)
+			return nil, fmt.Errorf("%v/%vからファイル取得エラー: %v", bucket, prefix, err)
 		}
 		if attrs.Name[len(attrs.Name)-1] != '/' {
 			objects = append(objects, attrs)

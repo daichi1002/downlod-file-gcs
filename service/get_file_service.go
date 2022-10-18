@@ -6,6 +6,7 @@ import (
 	"downlod-file-gcs/util"
 	"fmt"
 	"os"
+	"time"
 
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -35,10 +36,12 @@ func (s *Service) Execute(ctx context.Context, db *gorm.DB, gcsClient interfaces
 func (s *Service) DownloadFile(ctx context.Context, client interfaces.GcsClient) {
 	// GCSバケット指定
 	gcsBucketName := os.Getenv("GcsBacketName")
+	date := time.Now().Format("20060102")
+	prefix := fmt.Sprintf("%v/", date)
 
-	objects, err := client.ListFilesWithPrefix(ctx, gcsBucketName)
+	objects, err := client.ListFilesWithPrefix(ctx, gcsBucketName, prefix)
 	fmt.Println(objects)
 	if err != nil {
-		// return nil, err
+		s.logger.Fatalf("ファイル取り込みエラーが発生しました。%v", err)
 	}
 }
