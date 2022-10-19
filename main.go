@@ -17,7 +17,7 @@ func main() {
 	// 起動引数の処理
 	reqProcessingDate := parseArgs()
 
-	logger.Infof("%sのバッチ処理開始", reqProcessingDate)
+	logger.Infof("%s batch start", reqProcessingDate)
 
 	// contextに値を設定
 	ctx := context.Background()

@@ -4,6 +4,7 @@ import (
 	"context"
 	"downlod-file-gcs/interfaces"
 	"fmt"
+	"io/ioutil"
 
 	"cloud.google.com/go/storage"
 	"google.golang.org/api/iterator"
@@ -30,7 +31,7 @@ func (c *GcsClient) ListFilesWithPrefix(ctx context.Context, bucket, prefix stri
 			break
 		}
 		if err != nil {
-			return nil, fmt.Errorf("%v/%vからファイル取得エラー: %v", bucket, prefix, err)
+			return nil, fmt.Errorf("error getting files from %v/%v: %v", bucket, prefix, err)
 		}
 		if attrs.Name[len(attrs.Name)-1] != '/' {
 			objects = append(objects, attrs)
@@ -38,4 +39,20 @@ func (c *GcsClient) ListFilesWithPrefix(ctx context.Context, bucket, prefix stri
 	}
 
 	return objects, nil
+}
+
+func (c *GcsClient) DownloadFile(ctx context.Context, bucket, object string) ([]byte, error) {
+
+	rc, err := c.client.Bucket(bucket).Object(object).NewReader(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("download error %v: %v", object, err)
+	}
+	defer rc.Close()
+
+	data, err := ioutil.ReadAll(rc)
+	if err != nil {
+		return nil, fmt.Errorf("download error %v: %v", object, err)
+	}
+
+	return data, nil
 }

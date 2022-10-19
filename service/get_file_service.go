@@ -40,8 +40,22 @@ func (s *Service) DownloadFile(ctx context.Context, client interfaces.GcsClient)
 	prefix := fmt.Sprintf("%v/", date)
 
 	objects, err := client.ListFilesWithPrefix(ctx, gcsBucketName, prefix)
-	fmt.Println(objects)
+
 	if err != nil {
-		s.logger.Fatalf("ファイル取り込みエラーが発生しました。%v", err)
+		s.logger.Fatalf("file import error %v", err)
+	}
+
+	if len(objects) == 0 {
+		s.logger.Info("no acquired file")
+		os.Exit(0)
+	}
+
+	result := make([]byte, 0)
+	for _, obj := range objects {
+		content, err := client.DownloadFile(ctx, gcsBucketName, obj.Name)
+		if err != nil {
+			s.logger.Fatalf("file download error %v", err)
+		}
+		result = append(result, content...)
 	}
 }
