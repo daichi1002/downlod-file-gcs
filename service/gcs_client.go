@@ -56,3 +56,7 @@ func (c *GcsClient) DownloadFile(ctx context.Context, bucket, object string) ([]
 
 	return data, nil
 }
+
+func (c *GcsClient) UploadFile(ctx context.Context, bucket, object string, content []byte) error {
+	return nil
+}
